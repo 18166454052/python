@@ -56,6 +56,8 @@ class TvItem(scrapy.Item):
     key_val = scrapy.Field()
     type = scrapy.Field()
     create_time = scrapy.Field()
+    pinyin = scrapy.Field()
+    py = scrapy.Field()
 
 class TvList(scrapy.Item):
     '''
@@ -89,6 +91,8 @@ class VarietyItem(scrapy.Item):
     key = scrapy.Field()
     key_val = scrapy.Field()
     type = scrapy.Field()
+    pinyin = scrapy.Field()
+    py = scrapy.Field()
     create_time = scrapy.Field()
 
 

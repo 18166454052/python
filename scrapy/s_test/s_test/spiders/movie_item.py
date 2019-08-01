@@ -42,7 +42,8 @@ class MovieListSpider(scrapy.Spider):
         meta = response.meta
         pinyin = ""
         py = ""
-        for it in movie_list.items():
+        for index in range(movie_list.length):
+            it = PyQuery(movie_list[index])
             #  movie_url
             #  movie_score
             #  movie_image

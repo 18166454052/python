@@ -4,6 +4,7 @@ from pyquery import PyQuery
 from ..items import TvItem
 import pymysql
 import pymysql.cursors
+import pypinyin
 import string
 import time
 class TvItemSpider(scrapy.Spider):
@@ -42,7 +43,8 @@ class TvItemSpider(scrapy.Spider):
         py = PyQuery(response.text)
         tv_list = py(".mod_figure_list_box  .list_item")  #前分页的所有movie列表
         meta = response.meta
-        for it in tv_list.items():
+        for index in range(tv_list.length):
+            it = PyQuery(tv_list[index])
             tv_title = it(".figure_detail > a").attr("title")
             tv_url = it(".figure").attr("href")
             caption = it(".figure > .figure_caption").text()
@@ -59,6 +61,16 @@ class TvItemSpider(scrapy.Spider):
 
             tv_image = it(".figure > .figure_pic").attr("src")
             tv_desc = it(".figure_detail > .figure_desc").attr("title")
+            pinyin = ""
+            py = ""
+            if not tv_title is None:
+                pinyin1 = pypinyin.pinyin(tv_title.split(" ")[0], style=pypinyin.NORMAL)
+                py1 = pypinyin.pinyin(tv_title.split(" ")[0], style=pypinyin.FIRST_LETTER)  # 简拼
+                for i in pinyin1:
+                    pinyin += ''.join(i)
+                for j in py1:
+                    py += ''.join(j)
+
             item = TvItem()
             item["tv_url"] = tv_url
             item["tv_caption"] = tv_caption
@@ -69,6 +81,8 @@ class TvItemSpider(scrapy.Spider):
             item["offset"] = meta["offset"]
             item["key"] = meta["key"]
             item["key_val"] = meta["key_val"]
+            item["pinyin"] = py
+            item["py"] = py
             # category
             cate = ("feature", "iarea", "year", "pay")
             for ca in cate:

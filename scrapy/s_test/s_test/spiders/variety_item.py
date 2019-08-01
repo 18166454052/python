@@ -4,6 +4,7 @@ from pyquery import PyQuery
 from ..items import VarietyItem
 import pymysql
 import pymysql.cursors
+import pypinyin
 import time
 class VarietyItemSpider(scrapy.Spider):
     name = "variety_item"
@@ -53,10 +54,20 @@ class VarietyItemSpider(scrapy.Spider):
             # key_val = scrapy.Field()
             # type = scrapy.Field()
             # create_time = scrapy.Field()
+            pinyin = ""
+            py = ""
+
             variety_title = it(".figure_detail > a").attr("title")
             variety_url = it(".figure").attr("href")
             variety_image = it(".figure > .figure_pic").attr("src")
             variety_desc = it(".figure_detail > .figure_desc").attr("title")
+            if not variety_title is None:
+                pinyin1 = pypinyin.pinyin(variety_title.split(" ")[0], style=pypinyin.NORMAL)
+                py1 = pypinyin.pinyin(variety_title.split(" ")[0], style=pypinyin.FIRST_LETTER)  # 简拼
+                for i in pinyin1:
+                    pinyin += ''.join(i)
+                for j in py1:
+                    py += ''.join(j)
             item = VarietyItem()
             item["variety_url"] = variety_url
             item["variety_image"] = variety_image
@@ -66,6 +77,8 @@ class VarietyItemSpider(scrapy.Spider):
             item["key"] = meta["key"]
             item["key_val"] = meta["key_val"]
             item["order"] = int(meta["offset"]) + int(index)
+            item["pinyin"] = pinyin
+            item["py"] = py
             # category
             cate = ("itype", "iarea", "exclusive", "iyear", "ipay")
             for ca in cate:

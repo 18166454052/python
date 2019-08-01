@@ -42,7 +42,7 @@ class CartoonItemSpider(scrapy.Spider):
         py = PyQuery(response.text)
         cartoon_list = py(".list_item")
         meta = response.meta
-        for index in range(cartoon_list.length):
+        for index in range(cartoon_list.length):  # 这样改是为了计算 offset
             it = PyQuery(cartoon_list[index])
             cartoon_title = it(".figure_detail > a").attr("title")
             cartoon_url = it(".figure").attr("href")

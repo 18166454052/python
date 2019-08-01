@@ -229,8 +229,8 @@ class TvItemPipeline(object):
 
         else:
             # 判断结束，没有爬取 插入数据库  cate = ("feature", "iarea", "year", "pay")
-            sql = 'insert into tv_item ( tv_url,tv_all, tv_image, tv_title, tv_desc,tv_caption , offset,  feature , iarea , year, pay, create_time) ' \
-                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)'
+            sql = 'insert into tv_item ( tv_url,tv_all, tv_image, tv_title, tv_desc,tv_caption , offset,  feature , iarea , year, pay, create_time, pinyin, py) ' \
+                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s,%s)'
             self.cursor.execute(sql,  # 纯属python操作mysql知识
                                 (item['tv_url'],  # item里面定义的字段和表字段对应
                                  item['tv_all'],
@@ -243,7 +243,9 @@ class TvItemPipeline(object):
                                  item['iarea'],
                                  item['year'],
                                  item['pay'],
-                                 datetime.datetime.now().strftime('%Y-%m-%d')
+                                 datetime.datetime.now().strftime('%Y-%m-%d'),
+                                 item['pinyin'],
+                                 item['py'],
                                  ))
             # 提交sql语句
             self.connect.commit()
@@ -413,8 +415,8 @@ class VarietyItemPipeline(object):
 
         else:
             # 判断结束，没有爬取 插入数据库
-            sql = 'insert into variety_item (variety_url, variety_image, variety_title, variety_desc, offset,exclusive, itype , iarea ,iyear, ipay, px ,create_time) ' \
-                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )'
+            sql = 'insert into variety_item (variety_url, variety_image, variety_title, variety_desc, offset,exclusive, itype , iarea ,iyear, ipay, px ,create_time, pinyin, py) ' \
+                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )'
             self.cursor.execute(sql,  # 纯属python操作mysql知识
                                 (item['variety_url'],  # item里面定义的字段和表字段对应
                                  item['variety_image'],
@@ -427,7 +429,9 @@ class VarietyItemPipeline(object):
                                  item['iyear'],
                                  item['ipay'],
                                  item['order'],
-                                 datetime.datetime.now().strftime('%Y-%m-%d')
+                                 datetime.datetime.now().strftime('%Y-%m-%d'),
+                                 item['pinyin'],
+                                 item['py']
 
                                  ))
             # 提交sql语句
