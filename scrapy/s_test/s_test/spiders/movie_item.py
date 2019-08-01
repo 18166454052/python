@@ -4,7 +4,7 @@ from pyquery import PyQuery
 from ..items import MovieItem
 import pymysql
 import pymysql.cursors
-import time
+import pypinyin
 class MovieListSpider(scrapy.Spider):
     name = "movie_list"
     allowed_domains = ["qq.com"]
@@ -40,18 +40,29 @@ class MovieListSpider(scrapy.Spider):
         py = PyQuery(response.text)
         movie_list = py(".mod_figure_list_box  .list_item")  #前分页的所有movie列表
         meta = response.meta
+        pinyin = ""
+        py = ""
         for it in movie_list.items():
             #  movie_url
             #  movie_score
             #  movie_image
             #  movie_title
             #  movie_desc
+            pinyin = ""
+            py = ""
+
             movie_title = it(".figure_detail > a").attr("title")
             movie_url = it(".figure").attr("href")
             movie_score = it(".figure > .figure_score").text()
             movie_image = it(".figure > .figure_pic").attr("src")
-
             movie_desc = it(".figure_detail > .figure_desc").attr("title")
+            if not movie_title is None:
+                pinyin1 = pypinyin.pinyin(movie_title.split(" ")[0], style=pypinyin.NORMAL)
+                py1 = pypinyin.pinyin(movie_title.split(" ")[0], style=pypinyin.FIRST_LETTER)  # 简拼
+                for i in pinyin1:
+                    pinyin += ''.join(i)
+                for j in py1:
+                    py += ''.join(j)
             item = MovieItem()
             item["movie_url"] = movie_url
             item["movie_score"] = movie_score
@@ -61,6 +72,8 @@ class MovieListSpider(scrapy.Spider):
             item["offset"] = meta["offset"]
             item["key"] = meta["key"]
             item["key_val"] = meta["key_val"]
+            item["pinyin"] = pinyin
+            item["py"] = py
             # category
             cate = ("itype", "iarea", "characteristic", "year", "charge")
             for ca in cate:
@@ -69,7 +82,6 @@ class MovieListSpider(scrapy.Spider):
                 else:
                     item[ca] = ""
             yield item
-
     def page_list(self, response):  #获取当前分类下的所有分页
 
         # 此处要拼接offset  获取当前系itype下的所有分页

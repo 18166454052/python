@@ -33,6 +33,8 @@ class MovieItem(scrapy.Item):
     charge = scrapy.Field()
     key = scrapy.Field()
     key_val = scrapy.Field()
+    pinyin = scrapy.Field()
+    py = scrapy.Field()
 
 
 class TvItem(scrapy.Item):

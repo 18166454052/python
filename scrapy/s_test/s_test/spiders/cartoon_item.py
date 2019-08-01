@@ -5,8 +5,6 @@ from ..items import CartoonItem
 import pymysql
 import pymysql.cursors
 import pypinyin
-import string
-import time
 class CartoonItemSpider(scrapy.Spider):
     name = "cartoon_item"
     allowed_domains = ["qq.com"]

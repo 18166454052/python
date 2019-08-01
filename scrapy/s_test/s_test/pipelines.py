@@ -108,8 +108,8 @@ class MovieListPipeline(object):
 
         else:
             # 判断结束，没有爬取 插入数据库
-            sql = 'insert into movie_item ( movie_url, movie_score, movie_image, movie_title, movie_desc,offset,  itype , iarea , characteristic, year, charge) ' \
-                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )'
+            sql = 'insert into movie_item ( movie_url, movie_score, movie_image, movie_title, movie_desc,offset,  itype , iarea , characteristic, year, charge,pinyin, py) ' \
+                  'value (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )'
             self.cursor.execute(sql,  # 纯属python操作mysql知识
                                 (item['movie_url'],  # item里面定义的字段和表字段对应
                                  item['movie_score'],
@@ -121,7 +121,9 @@ class MovieListPipeline(object):
                                  item['iarea'],
                                  item['characteristic'],
                                  item['year'],
-                                 item['charge']
+                                 item['charge'],
+                                 item['pinyin'],
+                                 item['py']
                                  ))
             # 提交sql语句
             self.connect.commit()
