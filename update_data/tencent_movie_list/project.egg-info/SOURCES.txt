@@ -1,0 +1,15 @@
+setup.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
+tencent_movie_list/__init__.py
+tencent_movie_list/db.py
+tencent_movie_list/items.py
+tencent_movie_list/main.py
+tencent_movie_list/middlewares.py
+tencent_movie_list/pipelines.py
+tencent_movie_list/settings.py
+tencent_movie_list/spiders/__init__.py
+tencent_movie_list/spiders/tencent_movie_list_update.py
