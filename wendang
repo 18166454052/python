@@ -1,0 +1,24 @@
+/**关于数据库的一些说明**/
+scrapyd   http://39.108.15.156:6800/   查看爬虫日志
+
+spiderkeeper   http://39.108.15.156:5000/  部署爬虫项目
+
+
+打包 爬虫项目成.egg文件
+
+CD C:\video_project\update_data\tencent_movie_list\tencent_movie_list
+scrapyd-deploy -p tencent_movie_list_update --build-egg tencent_movie_update.egg
+
+
+scrapy  创建爬虫项目
+   scrapy startproject Demo
+
+   CD Demo  scrapy genspider demo ''qq.com
+
+HIDISQL 导出数据到其他服务器   数据库 表   选中 “创建” 选项
+
+movie_category
+   year： year 字段是用来对数据库的查询进行排序  按照最近-最远 从大到小赋予不同的值  和 iyear本身没有什么关系
+          比如 2020-2000   可赋值从 20--- 往后   后面可以根据 year字段对movie_item 做查询排序
+
+      爬虫拼接参数  movie  KEY==iyear  参数是year  variety key = iYear参数是iyear  注意曲风==区分
